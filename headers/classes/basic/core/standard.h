@@ -12,9 +12,7 @@ namespace BychkovVV::main::classes
      {protected:
         static const bool compareByVector = false;
       public:
-        void Standard::out();
         virtual string toString();
-        static bool isInInterval(unsigned long value, unsigned long min, unsigned long max);
         double toDoubleValue();
         vector<double> toDoubleVectorValue();
         bool compare(Standard &value, string operation);
@@ -26,5 +24,4 @@ namespace BychkovVV::main::classes
         bool operator <=(Standard &value);
         bool operator <(Standard &value);
       };
-   class Matches;
   }
