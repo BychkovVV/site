@@ -1,6 +1,8 @@
+#pragma once
 #include <string>
+#include <vector>
 using namespace std;
-namespace BychkovVV::main::classes
+namespace BychkovVV::main::classes::basic::core
   {/*
      Стандартный, базовый класс для всех остальных классов.
      compareByVector - правила для сравнения его, compareByVector - true - сравнивать по векору
@@ -12,16 +14,19 @@ namespace BychkovVV::main::classes
      {protected:
         static const bool compareByVector = false;
       public:
-        virtual string toString();
-        double toDoubleValue();
-        vector<double> toDoubleVectorValue();
-        bool compare(Standard &value, string operation);
-        bool compare(string operation, Standard &value);
-        bool operator ==(Standard &value);
-        bool operator !=(Standard &value);
-        bool operator >=(Standard &value);
-        bool operator >(Standard &value);
-        bool operator <=(Standard &value);
-        bool operator <(Standard &value);
+        virtual ~Standard()
+          {             
+          }
+        virtual string toString() const;
+        double toDoubleValue() const;
+        vector<double> toDoubleVectorValue() const;
+        bool compare(Standard const &value, string operation) const;
+        bool compare(string operation, Standard const &value) const;
+        bool operator ==(Standard const &value) const;
+        bool operator !=(Standard const &value) const;
+        bool operator >=(Standard const &value) const;
+        bool operator >(Standard const &value) const;
+        bool operator <=(Standard const &value) const;
+        bool operator <(Standard const &value) const;
       };
   }
