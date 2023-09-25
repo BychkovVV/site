@@ -8,8 +8,8 @@
 #include <cstring>
 #include <utility>
 #include <cmath>
-#include "../core/standard.h"
-#include "../core/compareoperation.h"
+#include "headers/classes/basic/core/standard.h"
+#include "headers/classes/basic/core/compareoperation.h"
 using namespace std;
 using CompareOperation = BychkovVV::main::classes::basic::core::CompareOperation;
 namespace BychkovVV::main::classes::basic

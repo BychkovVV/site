@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
-#include "../../../../headers/classes/basic/core/standard.h"
-#include "../../../../headers/classes/basic/helpers/calculations.h"
+#include "headers/classes/basic/core/standard.h"
+#include "headers/classes/basic/helpers/calculations.h"
 using Calculations = BychkovVV::main::classes::basic::helpers::Calculations;
 namespace BychkovVV::main::classes::basic::core
   {string Standard::toString() const
