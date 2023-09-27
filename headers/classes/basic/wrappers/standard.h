@@ -1,4 +1,7 @@
 #pragma once
+#include "headers/common.h"
+#include <ostream>
+#include <iostream>
 #include "headers/classes/basic/core/standard.h"
 namespace BychkovVV::main::classes::basic::wrappers
   {template <typename TYPE> class Standard : public BychkovVV::main::classes::basic::core::Standard
@@ -6,29 +9,232 @@ namespace BychkovVV::main::classes::basic::wrappers
         TYPE value;        
       public:
         Standard(TYPE value)
-          {this->value = value;
-          }
-        ValueSimpleWrapper(TYPE value)
           {this->setValue(value);
           }
-        ValueSimpleWrapper(const ValueSimpleWrapper<TYPE> &value):ValueSimpleWrapper(value.getValue()) 
-          {          
+        Standard(TYPE &value)
+          {this->setValue(value);
+          }
+        Standard(TYPE *value)
+          {return this->setValue(*value);             
+          }
+        Standard(const Standard<TYPE> &value) : Standard(value.getValue()) 
+          {             
+          }
+        virtual ~Standard<TYPE>()
+          {             
           }
         virtual TYPE getValue() const
-          {return value;          
+          {return value;             
           }
         void setValue(TYPE value)
-          {//cout << "Setting value << " << value[0] << endl;
-           this->value = value;
+          {this->value = value;          
           }
         void operator = (TYPE value)
-          {this->setValue(value);          
+          {this->setValue(value);             
           }
-        void operator = (ValueSimpleWrapper<TYPE> &value)
-          {*this = value.getValue();          
+        void operator = (Standard<TYPE> &value)
+          {*this = value.getValue();             
           }
-        void operator = (ValueSimpleWrapper<TYPE> &&value)
-          {*this = value.getValue();          
+        Standard<TYPE>& operator += (const TYPE otherElement)
+          {value += otherElement;             
+           return *this;
+          }
+        Standard<TYPE>& operator +() const
+          {Standard<TYPE> *linkToTheResult = new Standard<TYPE>(*this);          
+           linkToTheResult->setValue(( + 1) * value);
+           return *linkToTheResult;
+          }
+        Standard<TYPE>& operator -() const
+          {Standard<TYPE> *linkToTheResult = new Standard<TYPE>(*this);          
+           linkToTheResult->setValue(( - 1) * value);
+           return *linkToTheResult;
+          }
+        Standard<TYPE>& operator ~() const
+          {Standard<TYPE> *linkToTheResult = new Standard<TYPE>(*this);          
+           linkToTheResult->setValue(~ value);
+           return *linkToTheResult;
+          }
+        Standard<TYPE>& operator ++()
+          {++value;
+           return *this;          
+          }
+        Standard<TYPE>& operator ++(int)
+          {Standard<TYPE> *old = new Standard<TYPE>(*this);
+           operator++();
+           return *old;          
+          }
+        Standard<TYPE>& operator += (const Standard<TYPE> &otherElement)
+          {this += otherElement.getValue();             
+           return *this;
+          }
+        Standard<TYPE> operator + (const TYPE &otherElement) const
+          {Standard<TYPE> result(this);            
+           result += otherElement;
+           return result;
+          }
+        Standard<TYPE> operator + (const Standard<TYPE> &otherElement) const
+          {return *this + otherElement.getValue();
+          }
+        Standard<TYPE>& operator -= (const TYPE otherElement)
+          {value -= otherElement;             
+           return *this;
+          }
+        Standard<TYPE>& operator --()
+          {--value;
+           return *this;          
+          }
+        Standard<TYPE>& operator --(int)
+          {Standard<TYPE> *old = new Standard<TYPE>(*this);
+           operator--();
+           return *old;          
+          }
+        Standard<TYPE>& operator -= (const Standard<TYPE> &otherElement)
+          {this -= otherElement.getValue();             
+           return *this;
+          }
+        Standard<TYPE> operator - (const TYPE &otherElement) const
+          {Standard<TYPE> result(this);            
+           result -= otherElement;
+           return result;
+          }
+        Standard<TYPE> operator - (const Standard<TYPE> &otherElement) const
+          {return *this - otherElement.getValue();
+          }
+        Standard<TYPE>& operator *= (const TYPE otherElement)
+          {value *= otherElement;             
+           return *this;
+          }
+        Standard<TYPE>& operator *= (const Standard<TYPE> &otherElement)
+          {this *= otherElement.getValue();             
+           return *this;
+          }
+        Standard<TYPE> operator * (const TYPE &otherElement) const
+          {Standard<TYPE> result(this);            
+           result *= otherElement;
+           return result;
+          }
+        Standard<TYPE> operator * (const Standard<TYPE> &otherElement) const
+          {return *this * otherElement.getValue();
+          }
+        Standard<TYPE>& operator /= (const TYPE otherElement)
+          {value /= otherElement;             
+           return *this;
+          }
+        Standard<TYPE>& operator /= (const Standard<TYPE> &otherElement)
+          {this /= otherElement.getValue();             
+           return *this;
+          }
+        Standard<TYPE> operator / (const TYPE &otherElement) const
+          {Standard<TYPE> result(this);            
+           result /= otherElement;
+           return result;
+          }
+        Standard<TYPE> operator / (const Standard<TYPE> &otherElement) const
+          {return *this / otherElement.getValue();
+          }
+        Standard<TYPE>& operator %= (const TYPE otherElement)
+          {value %= otherElement;             
+           return *this;
+          }
+        Standard<TYPE>& operator %= (const Standard<TYPE> &otherElement)
+          {this %= otherElement.getValue();             
+           return *this;
+          }
+        Standard<TYPE> operator % (const TYPE &otherElement) const
+          {Standard<TYPE> result(this);            
+           result %= otherElement;
+           return result;
+          }
+        Standard<TYPE> operator % (const Standard<TYPE> &otherElement) const
+          {return *this % otherElement.getValue();
+          }
+        Standard<TYPE>& operator &= (const TYPE otherElement)
+          {value &= otherElement;             
+           return *this;
+          }
+        Standard<TYPE>& operator &= (const Standard<TYPE> &otherElement)
+          {this &= otherElement.getValue();             
+           return *this;
+          }
+        Standard<TYPE> operator & (const TYPE &otherElement) const
+          {Standard<TYPE> result(this);            
+           result &= otherElement;
+           return result;
+          }
+        Standard<TYPE> operator & (const Standard<TYPE> &otherElement) const
+          {return *this & otherElement.getValue();
+          }
+        Standard<TYPE>& operator |= (const TYPE otherElement)
+          {value |= otherElement;             
+           return *this;
+          }
+        Standard<TYPE>& operator |= (const Standard<TYPE> &otherElement)
+          {this |= otherElement.getValue();             
+           return *this;
+          }
+        Standard<TYPE> operator | (const TYPE &otherElement) const
+          {Standard<TYPE> result(this);            
+           result |= otherElement;
+           return result;
+          }
+        Standard<TYPE> operator | (const Standard<TYPE> &otherElement) const
+          {return *this | otherElement.getValue();
+          }
+        Standard<TYPE>& operator ^= (const TYPE otherElement)
+          {value ^= otherElement;             
+           return *this;
+          }
+        Standard<TYPE>& operator ^= (const Standard<TYPE> &otherElement)
+          {this ^= otherElement.getValue();             
+           return *this;
+          }
+        Standard<TYPE> operator ^ (const TYPE &otherElement) const
+          {Standard<TYPE> result(this);            
+           result ^= otherElement;
+           return result;
+          }
+        Standard<TYPE> operator ^ (const Standard<TYPE> &otherElement) const
+          {return *this ^ otherElement.getValue();
+          }
+        Standard<TYPE>& operator ^= (const TYPE otherElement)
+          {value ^= otherElement;             
+           return *this;
+          }
+        Standard<TYPE>& operator ^= (const Standard<TYPE> &otherElement)
+          {this ^= otherElement.getValue();             
+           return *this;
+          }
+        Standard<TYPE> operator ^ (const TYPE &otherElement) const
+          {Standard<TYPE> result(this);            
+           result ^= otherElement;
+           return result;
+          }
+        Standard<TYPE> operator ^ (const Standard<TYPE> &otherElement) const
+          {return *this ^ otherElement.getValue();
+          }
+        Standard<TYPE>& operator ^= (const TYPE otherElement)
+          {value ^= otherElement;             
+           return *this;
+          }
+        Standard<TYPE>& operator ^= (const Standard<TYPE> &otherElement)
+          {this ^= otherElement.getValue();             
+           return *this;
+          }
+        Standard<TYPE> operator ^ (const TYPE &otherElement) const
+          {Standard<TYPE> result(this);            
+           result ^= otherElement;
+           return result;
+          }
+        Standard<TYPE> operator ^ (const Standard<TYPE> &otherElement) const
+          {return *this ^ otherElement.getValue();
+          }
+        friend ostream& operator << (ostream &theStream, const Standard<TYPE> &c)
+          {theStream << c.getValue();
+           return theStream;             
+          }
+        friend ostream& operator >> (istream &theStream, const Standard<TYPE> &c)
+          {theStream >> c.value;
+           return theStream;             
           }
      };
   }

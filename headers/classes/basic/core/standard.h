@@ -1,4 +1,5 @@
 #pragma once
+#include "headers/common.h"
 #include <string>
 #include <vector>
 using namespace std;
@@ -11,22 +12,6 @@ namespace BychkovVV::main::classes::basic::core
      toDoubleVectorValue - в векторно-численный вид
    */
    class Standard
-     {protected:
-        static const bool compareByVector = false;
-      public:
-        virtual ~Standard()
-          {             
-          }
-        virtual string toString() const;
-        double toDoubleValue() const;
-        vector<double> toDoubleVectorValue() const;
-        bool compare(Standard const &value, string operation) const;
-        bool compare(string operation, Standard const &value) const;
-        bool operator ==(Standard const &value) const;
-        bool operator !=(Standard const &value) const;
-        bool operator >=(Standard const &value) const;
-        bool operator >(Standard const &value) const;
-        bool operator <=(Standard const &value) const;
-        bool operator <(Standard const &value) const;
-      };
+     {
+     };
   }
