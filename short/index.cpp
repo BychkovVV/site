@@ -305,19 +305,7 @@ class BinaryStream : public DataSource
        {logPosition("Position in file (in bytes)");          
        }
      virtual void setBitsFromString(string valueAsString)
-       {unsigned char *values = BinaryStream::getBytesFromString(valueAsString);
-        this->setBits(BinaryStream::getBytesFromString(valueAsString), thisString.size());       
-        this->doAccordingBooleanSetting("restorePosition", false);
-        pushSetting("restorePosition", false);
-        string thisString;
-        const unsigned long long theLength = valueAsString.size();
-        for(unsigned long long thisIndex = 0; thisIndex < theLength; thisIndex += BITS_COUNT_IN_A_BYTE)
-          {unsigned char value = BinaryStream::getByteFromString(thisString = valueAsString.substr(thisIndex, BITS_COUNT_IN_A_BYTE));
-           cout << endl << "Byte: " << to_string(value) << ", size: " << thisString.size();
-           this->setBits(&value, thisString.size());
-          }
-        popBooleanSetting("restorePosition");
-        this->doAccordingBooleanSetting("restorePosition", true);
+       {this->setBits(BinaryStream::getBytesFromString(valueAsString), thisString.size());       
        }
      virtual string getBitsToString(unsigned long theCount)
        {unsigned char *value = new unsigned char[getBytesCountInABits(theCount)];
