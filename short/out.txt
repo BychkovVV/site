@@ -1,0 +1,337 @@
+
+Checking equality: 1 byte (calculated value: "1") = BinaryStream::getBytesCountInABits(4) (calculated value: "1") ? - ok
+Checking equality: 1 byte (calculated value: "1") = BinaryStream::getBytesCountInABits(7) (calculated value: "1") ? - ok
+Checking equality: 2 byte (calculated value: "2") = BinaryStream::getBytesCountInABits(12) (calculated value: "2") ? - ok
+Checking equality: 4 byte (calculated value: "4") = BinaryStream::getBytesCountInABits(32) (calculated value: "4") ? - ok
+Checking equality: 1000000010000001 (calculated value: "1000000010000001") = BinaryStream::getBitsAsString(values, 16) (calculated value: "1000000010000001") ? - ok
+Checking equality: 00000001000000 (calculated value: "00000001000000") = BinaryStream::getBitsAsString(values, 14, 1) (calculated value: "00000001000000") ? - ok
+Checking equality: 010 (calculated value: "010") = BinaryStream::getBitsAsString(values, 3, 7) (calculated value: "010") ? - ok
+Checking equality: 1000000010000001 (calculated value: "1000000010000001") = BinaryStream::getBitsAsString(values, 16) (calculated value: "1000000010000001") ? - ok
+Checking equality: 100000001 (calculated value: "100000001") = BinaryStream::getBitsAsString(values, 9) (calculated value: "100000001") ? - ok
+Checking equality: (*BinaryStream::getBytesFromString("01") = 64) (calculated value: "@") = 64 (calculated value: "@") ? - ok
+Checking equality: (*BinaryStream::getBytesFromString("01000001011") = 65) (calculated value: "A") = 65 (calculated value: "A") ? - ok
+Checking equality: (*(BinaryStream::getBytesFromString("01000001011") + 1) = 96) (calculated value: "`") = 96 (calculated value: "`") ? - ok
+Attempt to to open file "C:\s2.txt", result: opened, good: yes
+Size: 2
+Position: 0
+Byte: 64, size: 2
+startPosition before getting current byte data in file: 0
+startPosition after getting current byte data in file: 1
+Position was chanbged, returning it
+Tellp after getting byte: 0
+Setting bits, position in the destination in bytes: 0, destination offset in bits (from start of the byte): 0, count of bits to set = 2, current byte in the destiation: 11011011
+
+Position in file (in bytes): 0
+Setting bits, position in bits (zero-based) of the source (means variable) = 0, thisValueToCopy = 01000000, this value of the bit: 0
+Destination byte after copying 1-th bit (0) of the source: 01011011
+Setting bits, position in bits (zero-based) of the source (means variable) = 1, thisValueToCopy = 10000000, this value of the bit: 1
+Destination byte after copying 2-th bit (1) of the source: 01011011
+Saving this byte (0-th, value is: "01011011") to the target streamCalled setCurrentByteData on file class with new Value = [, initial position: 0
+
+Position after writing: 2
+Attempt to to open file "C:\s2.txt", result: opened, good: yes
+Size: 2
+Position: 0
+255: 0
+startPosition before getting current byte data in file: 0
+startPosition after getting current byte data in file: 1
+Position was chanbged, returning it
+Tellp after getting byte: 0
+257: 0
+Information about the current byte: 01011011, offset in bits = 0
+Gettings bits, count = 2
+getValueOfTheBit(01011011, 0)
+(01011011) & (10000000)
+on 0, offset = 0: 00000000
+getValueOfTheBit(01011011, 1)
+(01011011) & (01000000)
+on 1, offset = 1: 01000000
+Checking equality: Value, saved to file (calculated value: "01") = Value, that have read from the file (calculated value: "01") ? - ok
+Attempt to to open file "C:\s2.txt", result: opened, good: yes
+Size: 2
+Position: 0
+Byte: 128, size: 2
+startPosition before getting current byte data in file: 0
+startPosition after getting current byte data in file: 1
+Position was chanbged, returning it
+Tellp after getting byte: 0
+Setting bits, position in the destination in bytes: 0, destination offset in bits (from start of the byte): 0, count of bits to set = 2, current byte in the destiation: 01011011
+
+Position in file (in bytes): 0
+Setting bits, position in bits (zero-based) of the source (means variable) = 0, thisValueToCopy = 10000000, this value of the bit: 1
+Destination byte after copying 1-th bit (1) of the source: 11011011
+Setting bits, position in bits (zero-based) of the source (means variable) = 1, thisValueToCopy = 00000000, this value of the bit: 0
+Destination byte after copying 2-th bit (0) of the source: 10011011
+Saving this byte (0-th, value is: "10011011") to the target streamCalled setCurrentByteData on file class with new Value = ›, initial position: 0
+
+Position after writing: 2
+Attempt to to open file "C:\s2.txt", result: opened, good: yes
+Size: 2
+Position: 0
+255: 0
+startPosition before getting current byte data in file: 0
+startPosition after getting current byte data in file: 1
+Position was chanbged, returning it
+Tellp after getting byte: 0
+257: 0
+Information about the current byte: 10011011, offset in bits = 0
+Gettings bits, count = 2
+getValueOfTheBit(10011011, 0)
+(10011011) & (10000000)
+on 0, offset = 0: 10000000
+getValueOfTheBit(10011011, 1)
+(10011011) & (01000000)
+on 1, offset = 1: 10000000
+Checking equality: Value, saved to file (calculated value: "10") = Value, that have read from the file (calculated value: "10") ? - ok
+Attempt to to open file "C:\s2.txt", result: opened, good: yes
+Size: 2
+Position: 0
+Seeking to: 0
+startPosition before getting current byte data in file: 0
+startPosition after getting current byte data in file: 1
+Position was chanbged, returning it
+Tellp after getting byte: 0
+New position in Binary Stream: 1
+Current byte data: 10011011
+Byte: 128, size: 2
+startPosition before getting current byte data in file: 0
+startPosition after getting current byte data in file: 1
+Position was chanbged, returning it
+Tellp after getting byte: 0
+Setting bits, position in the destination in bytes: 0, destination offset in bits (from start of the byte): 1, count of bits to set = 2, current byte in the destiation: 10011011
+
+Position in file (in bytes): 0
+Setting bits, position in bits (zero-based) of the source (means variable) = 0, thisValueToCopy = 10000000, this value of the bit: 1
+Destination byte after copying 1-th bit (1) of the source: 11011011
+Setting bits, position in bits (zero-based) of the source (means variable) = 1, thisValueToCopy = 00000000, this value of the bit: 0
+Destination byte after copying 2-th bit (0) of the source: 11011011
+Saving this byte (0-th, value is: "11011011") to the target streamCalled setCurrentByteData on file class with new Value = Û, initial position: 0
+
+Position after writing: 3
+Attempt to to open file "C:\s2.txt", result: opened, good: yes
+Size: 2
+Position: 0
+255: 0
+startPosition before getting current byte data in file: 0
+startPosition after getting current byte data in file: 1
+Position was chanbged, returning it
+Tellp after getting byte: 0
+257: 0
+Information about the current byte: 11011011, offset in bits = 0
+Gettings bits, count = 3
+getValueOfTheBit(11011011, 0)
+(11011011) & (10000000)
+on 0, offset = 0: 10000000
+getValueOfTheBit(11011011, 1)
+(11011011) & (01000000)
+on 1, offset = 1: 11000000
+getValueOfTheBit(11011011, 2)
+(11011011) & (00100000)
+on 2, offset = 2: 11000000
+Checking equality: Value, saved to file (calculated value: "110") = Value, that have read from the file (calculated value: "110") ? - ok
+Attempt to to open file "C:\s2.txt", result: opened, good: yes
+Size: 2
+Position: 0
+Seeking to: 0
+startPosition before getting current byte data in file: 0
+startPosition after getting current byte data in file: 1
+Position was chanbged, returning it
+Tellp after getting byte: 0
+New position in Binary Stream: 7
+Current byte data: 11011011
+Byte: 160, size: 3
+startPosition before getting current byte data in file: 0
+startPosition after getting current byte data in file: 1
+Position was chanbged, returning it
+Tellp after getting byte: 0
+Setting bits, position in the destination in bytes: 0, destination offset in bits (from start of the byte): 7, count of bits to set = 3, current byte in the destiation: 11011011
+
+Position in file (in bytes): 0
+Setting bits, position in bits (zero-based) of the source (means variable) = 0, thisValueToCopy = 10100000, this value of the bit: 1
+Destination byte after copying 1-th bit (1) of the source: 11011011
+Setting bits, position in bits (zero-based) of the source (means variable) = 1, thisValueToCopy = 01000000, this value of the bit: 0
+Saving this byte (1-th, value is: "11011011") to the target streamCalled setCurrentByteData on file class with new Value = Û, initial position: 0
+
+startPosition before getting current byte data in file: 1
+startPosition after getting current byte data in file: 2
+Position was chanbged, returning it
+Tellp after getting byte: 1
+Destination byte after copying 2-th bit (0) of the source: 01000000
+Setting bits, position in bits (zero-based) of the source (means variable) = 2, thisValueToCopy = 10000000, this value of the bit: 1
+Destination byte after copying 3-th bit (1) of the source: 01000000
+Saving this byte (1-th, value is: "01000000") to the target streamCalled setCurrentByteData on file class with new Value = @, initial position: 1
+
+Position after writing: 10
+Attempt to to open file "C:\s2.txt", result: opened, good: yes
+Size: 2
+Position: 0
+Seeking to: 0
+startPosition before getting current byte data in file: 0
+startPosition after getting current byte data in file: 1
+Position was chanbged, returning it
+Tellp after getting byte: 0
+New position in Binary Stream: 7
+Current byte data: 11011011
+255: 0
+startPosition before getting current byte data in file: 0
+startPosition after getting current byte data in file: 1
+Position was chanbged, returning it
+Tellp after getting byte: 0
+257: 0
+Information about the current byte: 11011011, offset in bits = 7
+Gettings bits, count = 3
+getValueOfTheBit(11011011, 7)
+(11011011) & (00000001)
+on 0, offset = 7: 10000000
+startPosition before getting current byte data in file: 1
+startPosition after getting current byte data in file: 2
+Position was chanbged, returning it
+Tellp after getting byte: 1
+getValueOfTheBit(01000000, 0)
+(01000000) & (10000000)
+on 1, offset = 0: 10000000
+getValueOfTheBit(01000000, 1)
+(01000000) & (01000000)
+on 2, offset = 1: 10100000
+Checking equality: Value, saved to file (calculated value: "101") = Value, that have read from the file (calculated value: "101") ? - ok
+Attempt to to open file "C:\s2.txt", result: opened, good: yes
+Size: 2
+Position: 0
+Seeking to: 0
+startPosition before getting current byte data in file: 0
+startPosition after getting current byte data in file: 1
+Position was chanbged, returning it
+Tellp after getting byte: 0
+New position in Binary Stream: 0
+Current byte data: 11011011
+Byte: 182, size: 8
+startPosition before getting current byte data in file: 0
+startPosition after getting current byte data in file: 1
+Position was chanbged, returning it
+Tellp after getting byte: 0
+Setting bits, position in the destination in bytes: 0, destination offset in bits (from start of the byte): 0, count of bits to set = 8, current byte in the destiation: 11011011
+
+Position in file (in bytes): 0
+Setting bits, position in bits (zero-based) of the source (means variable) = 0, thisValueToCopy = 10110110, this value of the bit: 1
+Destination byte after copying 1-th bit (1) of the source: 11011011
+Setting bits, position in bits (zero-based) of the source (means variable) = 1, thisValueToCopy = 01101100, this value of the bit: 0
+Destination byte after copying 2-th bit (0) of the source: 10011011
+Setting bits, position in bits (zero-based) of the source (means variable) = 2, thisValueToCopy = 11011000, this value of the bit: 1
+Destination byte after copying 3-th bit (1) of the source: 10111011
+Setting bits, position in bits (zero-based) of the source (means variable) = 3, thisValueToCopy = 10110000, this value of the bit: 1
+Destination byte after copying 4-th bit (1) of the source: 10111011
+Setting bits, position in bits (zero-based) of the source (means variable) = 4, thisValueToCopy = 01100000, this value of the bit: 0
+Destination byte after copying 5-th bit (0) of the source: 10110011
+Setting bits, position in bits (zero-based) of the source (means variable) = 5, thisValueToCopy = 11000000, this value of the bit: 1
+Destination byte after copying 6-th bit (1) of the source: 10110111
+Setting bits, position in bits (zero-based) of the source (means variable) = 6, thisValueToCopy = 10000000, this value of the bit: 1
+Destination byte after copying 7-th bit (1) of the source: 10110111
+Setting bits, position in bits (zero-based) of the source (means variable) = 7, thisValueToCopy = 00000000, this value of the bit: 0
+Destination byte after copying 8-th bit (0) of the source: 10110110
+Saving this byte (1-th, value is: "10110110") to the target streamCalled setCurrentByteData on file class with new Value = ¶, initial position: 0
+
+Position after writing: 8
+Byte: 219, size: 8
+startPosition before getting current byte data in file: 0
+startPosition after getting current byte data in file: 1
+Position was chanbged, returning it
+Tellp after getting byte: 0
+Setting bits, position in the destination in bytes: 1, destination offset in bits (from start of the byte): 0, count of bits to set = 8, current byte in the destiation: 10110110
+
+Position in file (in bytes): 0
+Setting bits, position in bits (zero-based) of the source (means variable) = 0, thisValueToCopy = 11011011, this value of the bit: 1
+Destination byte after copying 1-th bit (1) of the source: 10110110
+Setting bits, position in bits (zero-based) of the source (means variable) = 1, thisValueToCopy = 10110110, this value of the bit: 1
+Destination byte after copying 2-th bit (1) of the source: 11110110
+Setting bits, position in bits (zero-based) of the source (means variable) = 2, thisValueToCopy = 01101100, this value of the bit: 0
+Destination byte after copying 3-th bit (0) of the source: 11010110
+Setting bits, position in bits (zero-based) of the source (means variable) = 3, thisValueToCopy = 11011000, this value of the bit: 1
+Destination byte after copying 4-th bit (1) of the source: 11010110
+Setting bits, position in bits (zero-based) of the source (means variable) = 4, thisValueToCopy = 10110000, this value of the bit: 1
+Destination byte after copying 5-th bit (1) of the source: 11011110
+Setting bits, position in bits (zero-based) of the source (means variable) = 5, thisValueToCopy = 01100000, this value of the bit: 0
+Destination byte after copying 6-th bit (0) of the source: 11011010
+Setting bits, position in bits (zero-based) of the source (means variable) = 6, thisValueToCopy = 11000000, this value of the bit: 1
+Destination byte after copying 7-th bit (1) of the source: 11011010
+Setting bits, position in bits (zero-based) of the source (means variable) = 7, thisValueToCopy = 10000000, this value of the bit: 1
+Destination byte after copying 8-th bit (1) of the source: 11011011
+Saving this byte (2-th, value is: "11011011") to the target streamCalled setCurrentByteData on file class with new Value = Û, initial position: 0
+
+Position after writing: 16
+Attempt to to open file "C:\s2.txt", result: opened, good: yes
+Size: 2
+Position: 0
+255: 0
+startPosition before getting current byte data in file: 0
+startPosition after getting current byte data in file: 1
+Position was chanbged, returning it
+Tellp after getting byte: 0
+257: 0
+Information about the current byte: 11011011, offset in bits = 0
+Gettings bits, count = 16
+getValueOfTheBit(11011011, 0)
+(11011011) & (10000000)
+on 0, offset = 0: 10000000
+getValueOfTheBit(11011011, 1)
+(11011011) & (01000000)
+on 1, offset = 1: 11000000
+getValueOfTheBit(11011011, 2)
+(11011011) & (00100000)
+on 2, offset = 2: 11000000
+getValueOfTheBit(11011011, 3)
+(11011011) & (00010000)
+on 3, offset = 3: 11010000
+getValueOfTheBit(11011011, 4)
+(11011011) & (00001000)
+on 4, offset = 4: 11011000
+getValueOfTheBit(11011011, 5)
+(11011011) & (00000100)
+on 5, offset = 5: 11011000
+getValueOfTheBit(11011011, 6)
+(11011011) & (00000010)
+on 6, offset = 6: 11011010
+getValueOfTheBit(11011011, 7)
+(11011011) & (00000001)
+on 7, offset = 7: 11011011
+startPosition before getting current byte data in file: 1
+startPosition after getting current byte data in file: 2
+Position was chanbged, returning it
+Tellp after getting byte: 1
+getValueOfTheBit(01000000, 0)
+(01000000) & (10000000)
+on 8, offset = 0: 00000000
+getValueOfTheBit(01000000, 1)
+(01000000) & (01000000)
+on 9, offset = 1: 00000000
+getValueOfTheBit(01000000, 2)
+(01000000) & (00100000)
+on 10, offset = 2: 00000000
+getValueOfTheBit(01000000, 3)
+(01000000) & (00010000)
+on 11, offset = 3: 00000000
+getValueOfTheBit(01000000, 4)
+(01000000) & (00001000)
+on 12, offset = 4: 00000000
+getValueOfTheBit(01000000, 5)
+(01000000) & (00000100)
+on 13, offset = 5: 00000000
+getValueOfTheBit(01000000, 6)
+(01000000) & (00000010)
+on 14, offset = 6: 00000000
+getValueOfTheBit(01000000, 7)
+(01000000) & (00000001)
+on 15, offset = 7: 00000000
+startPosition before getting current byte data in file: 2
+startPosition after getting current byte data in file: 2
+Tellp after getting byte: 2
+Checking equality: Value, saved to file (calculated value: "1011011011011011") = Value, that have read from the file (calculated value: "1101101100000000") ?
+Closing file
+Closing file
+Closing file
+Closing file
+Closing file
+Closing file
+Closing file
+Closing file
+Closing file
+Closing file

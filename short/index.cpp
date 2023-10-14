@@ -62,25 +62,20 @@ class BinaryStream : public DataSource
      */
      unsigned char currentByteData;     
    public:
-     static string getBitsAsString(unsigned char value, unsigned long bitsCount, unsigned long startOffset)
-       {if(startOffset > 0)
-          {value >>= startOffset;
-          }
-        return getBitsAsString(value, bitsCount);
-       }
-     static string getBitsAsString(unsigned char value, unsigned long bitsCount)
+     static string getBitsAsString(unsigned char value, unsigned long bitsCount, unsigned char theOffset = 0)
        {string result = "";
-        for(unsigned long index = 0; index < bitsCount; index++)
-          {result += (((value & 1) == 1) ? "1" : "0");
-           value >>= 1;             
+        const unsigned char endIndex = theOffset + bitsCount;
+        unsigned char mask = (1 << ((BITS_COUNT_IN_A_BYTE - 1) - theOffset));
+        for(unsigned char index = theOffset; index < endIndex; index++)
+          {result += ((value & mask) ? "1" : "0");
+           mask >>= 1;             
           }          
-        std::reverse(result.begin(), result.end());
         return result;
        }
      static string getBitsAsString(unsigned char value)
        {return getBitsAsString(value, BITS_COUNT_IN_A_BYTE);          
        }
-     static string getBitsAsString(unsigned char *value, unsigned long bitsCount, unsigned long startOffset)
+     /*static string getBitsAsString(unsigned char *value, unsigned long bitsCount, unsigned long startOffset)
        {if(startOffset > 0)
           {while(startOffset > BITS_COUNT_IN_A_BYTE)
              {startOffset -= BITS_COUNT_IN_A_BYTE;
@@ -92,21 +87,31 @@ class BinaryStream : public DataSource
           }
         return getBitsAsString(*value, bitsCount);
        }
+     */
      static unsigned long long getBytesCountInABits(unsigned long long bitsCount)
        {return (unsigned long long) ceil(((double) bitsCount) / BITS_COUNT_IN_A_BYTE);          
        }
-     static string getBitsAsString(unsigned char *value, unsigned long bitsCount)
-       {string result = "";
+     static string getBitsAsString(unsigned char *value, unsigned long bitsCount, unsigned long startOffset = 0)
+       {while(startOffset >= BITS_COUNT_IN_A_BYTE)
+          {startOffset -= BITS_COUNT_IN_A_BYTE;
+           value++;
+          }        
+        string result = "";
         unsigned char thisCount;
+        unsigned char bitsLeftCountForFillingThisByte;
+        bool haveToContinue;
         while(bitsCount > 0)
-          {if(bitsCount >= BITS_COUNT_IN_A_BYTE)
-             {bitsCount -= (thisCount = BITS_COUNT_IN_A_BYTE);                
+          {if(haveToContinue = (bitsCount >= (bitsLeftCountForFillingThisByte = BITS_COUNT_IN_A_BYTE - startOffset)))
+             {bitsCount -= (thisCount = bitsLeftCountForFillingThisByte); 
              }
            else
              {thisCount = bitsCount;
               bitsCount = 0;          
              }
-           result += getBitsAsString(*value, thisCount);
+           result += getBitsAsString(*(value++), thisCount, startOffset);
+           if(haveToContinue && (startOffset > 0))
+             {startOffset = 0;
+             }
           }
         return result;
        }
@@ -204,6 +209,12 @@ class BinaryStream : public DataSource
      virtual unsigned char getCurrentByteData()
        {return currentByteData;          
        }
+     virtual unsigned char toPreviousByte()
+       {return 0;          
+       }
+     virtual unsigned char toNextByte()
+       {return 0;          
+       }
      virtual void setCurrentByteData(unsigned char newValue)
        {currentByteData = newValue;          
        }     
@@ -249,9 +260,10 @@ class BinaryStream : public DataSource
           {thisData >>= thisOffset;             
           }
         */
-        cout << endl << "Information about the current byte: " << getBitsAsString(thisData) << ", offset = " << thisOffset;
+        cout << endl << "Information about the current byte: " << getBitsAsString(thisData) << ", offset in bits = " << thisOffset;
         cout << endl << "Gettings bits, count = " << bitsCount;
         this->doAccordingBooleanSetting("restorePosition", false);
+        unsigned char mask = (1 << MAX_BITS_COUNT);
         for(index = 0; index < bitsCount; index++)
           {/*
             index % BITS_COUNT_IN_A_BYTE - .
@@ -263,20 +275,21 @@ class BinaryStream : public DataSource
              {thisValueToCopy = value++;                
               *thisValueToCopy = 0;
              }
-           else
-             {*thisValueToCopy <<= 1;                
-             }
+           
            /*
-             Добавляем теккущий бит в результат
+             Добавляем текущий бит в результат
            */
-           *thisValueToCopy |= (getValueOfTheBit(thisData, thisOffset) ? 1 : 0);
+           if(getValueOfTheBit(thisData, thisOffset))
+             {*thisValueToCopy |= mask;                
+             }
+           mask >>= 1;
            cout << endl << "on " << index << ", offset = " << thisOffset << ": " << getBitsAsString(*thisValueToCopy);
            /*
              
            */
            position++;
            if(thisOffset == MAX_BITS_COUNT)
-             {thisData = this->getCurrentByteData();
+             {thisData = this->toNextByte();
               thisOffset = 0;
              }
            else
@@ -292,7 +305,9 @@ class BinaryStream : public DataSource
        {logPosition("Position in file (in bytes)");          
        }
      virtual void setBitsFromString(string valueAsString)
-       {this->doAccordingBooleanSetting("restorePosition", false);
+       {unsigned char *values = BinaryStream::getBytesFromString(valueAsString);
+        this->setBits(BinaryStream::getBytesFromString(valueAsString), thisString.size());       
+        this->doAccordingBooleanSetting("restorePosition", false);
         pushSetting("restorePosition", false);
         string thisString;
         const unsigned long long theLength = valueAsString.size();
@@ -348,6 +363,7 @@ class BinaryStream : public DataSource
              {if(thisOffset == 0)
                 {cout << endl << "Saving this byte (" << to_string(getBytePoistion()) << "-th, value is: \"" << getBitsAsString(thisData) << "\") to the target stream";
                  this->setCurrentByteData(thisData);
+                 thisData = this->toNextByte();
                  //setBitsPoistion(getOffsetInBitsByBytes(++bytePosition));
                 }           
              }
@@ -377,14 +393,14 @@ class FileBinaryStream : public BinaryStream
      std::fstream *theValue;
      bool sizeIsDefined;
      unsigned long long size;
-     inline static bool WITH_RETURNING_POSITION = false;
+     inline static bool WITH_RETURNING_POSITION = true;
    public:
      /*virtual void setBitsPoistion(unsigned long long position)
        {theValue->seekg(getPoistionInTheBytesByPositionInTheBits(position));
         BinaryStream::setBitsPoistion(position);          
        }
      */
-     unsigned long long getSize()
+     unsigned long long getSizeInBytes()
        {if(!sizeIsDefined)
           {unsigned long long thePosition = theValue->tellp();
            theValue->seekg(0, ios_base::end);
@@ -395,7 +411,7 @@ class FileBinaryStream : public BinaryStream
           }
         return size;
        }
-     void setSize(unsigned long long size)
+     void setSizeInBytes(unsigned long long size)
        {this->size = size;
        }
      FileBinaryStream(string value): BinaryStream()
@@ -429,7 +445,7 @@ class FileBinaryStream : public BinaryStream
         BinaryStream::setBitsPoistion(position);
        }
      bool isAtEnd()
-       {return this->theValue->tellp() == this->getSize();          
+       {return this->theValue->tellp() == this->getSizeInBytes();          
        }
      unsigned char getCurrentByteData()
        {char result = 0;
@@ -458,6 +474,14 @@ class FileBinaryStream : public BinaryStream
           }
         return result;
        }
+     virtual unsigned char toPreviousByte()
+       {theValue->seekp(-1, ios_base::cur);          
+        return this->getCurrentByteData();                 
+       }
+     virtual unsigned char toNextByte()
+       {theValue->seekp(1, ios_base::cur);          
+        return this->getCurrentByteData();
+       }     
      virtual void setCurrentByteData(unsigned char newValue)
        {cout << "Called setCurrentByteData on file class with new Value = " << newValue << ", initial position: " << theValue->tellp() << endl;
         *theValue << newValue;          
@@ -533,7 +557,7 @@ template <typename THE_CLASS> class Behavior : public Standard
   };
 class Tester : public Standard
   {protected:
-     inline static bool OUTPUT_THIS = false;
+     inline static bool OUTPUT_THIS = true;
    public:
      template <typename TYPE> static bool assertEqual(TYPE value1, TYPE value2, string value1Name, string value2Name)
        {bool result = assertEqual(value1, value2, false);
@@ -570,11 +594,66 @@ void testGetBitsAsString()
    values[0] = 128;
    values[1] = 129;  
    string value = "1000000010000001";
-   Tester::assertEqual(value, BinaryStream::getBitsAsString(values, 16), value, "BinaryStream::getBitsAsString(values, 16)");     
+   Tester::assertEqual(value, BinaryStream::getBitsAsString(values, 16), value, "BinaryStream::getBitsAsString(values, 16)");
+   value = "00000001000000";
+   Tester::assertEqual(value, BinaryStream::getBitsAsString(values, 14, 1), value, "BinaryStream::getBitsAsString(values, 14, 1)");
+   value = "010";
+   Tester::assertEqual(value, BinaryStream::getBitsAsString(values, 3, 7), value, "BinaryStream::getBitsAsString(values, 3, 7)");
+   value = "1000000010000001";
+   Tester::assertEqual(value, BinaryStream::getBitsAsString(values, 16), value, "BinaryStream::getBitsAsString(values, 16)");
+   value = "100000001";
+   Tester::assertEqual(value, BinaryStream::getBitsAsString(values, 9), value, "BinaryStream::getBitsAsString(values, 9)");
   };
+void testGetBytesFromString()
+  {unsigned char *values;
+   string title = "(*BinaryStream::getBytesFromString(\"01\") = ";
+   values = BinaryStream::getBytesFromString("01");
+   title += to_string(*values) + ")";
+   Tester::assertEqual(*values, (unsigned char) 64, title, "64");
+   values = BinaryStream::getBytesFromString("01000001011");
+   title = "(*BinaryStream::getBytesFromString(\"01000001011\") = " + to_string(*values) + ")";
+   Tester::assertEqual(*values, (unsigned char) 65, title, "65");
+   title = "(*(BinaryStream::getBytesFromString(\"01000001011\") + 1) = " + to_string(*(values + 1)) + ")";
+   Tester::assertEqual(*(values + 1), (unsigned char) 96, title, "96");
+  }
+void testFileReadAndWrite()
+  {FileBinaryStream element("C:\\s2.txt");
+   string theValue1;
+   element.setBitsFromString(theValue1 = "01");
+   FileBinaryStream element2("C:\\s2.txt");
+   string theValue2 = element2.getBitsToString(2);
+   Tester::assertEqual(theValue1, theValue2, "Value, saved to file", "Value, that have read from the file");
+   FileBinaryStream element3("C:\\s2.txt");
+   element3.setBitsFromString(theValue1 = "10");
+   FileBinaryStream element4("C:\\s2.txt");
+   theValue2 = element4.getBitsToString(2);
+   Tester::assertEqual(theValue1, theValue2, "Value, saved to file", "Value, that have read from the file");
+   FileBinaryStream element5("C:\\s2.txt");
+   element5.setBitsPoistion(1);
+   element5.setBitsFromString(theValue1 = "10");
+   FileBinaryStream element6("C:\\s2.txt");
+   theValue2 = element6.getBitsToString(3);
+   theValue1 = "110";
+   Tester::assertEqual(theValue1, theValue2, "Value, saved to file", "Value, that have read from the file");
+   FileBinaryStream element7("C:\\s2.txt");
+   element7.setBitsPoistion(7);
+   element7.setBitsFromString(theValue1 = "101");
+   FileBinaryStream element8("C:\\s2.txt");
+   element8.setBitsPoistion(7);
+   theValue2 = element8.getBitsToString(3);
+   Tester::assertEqual(theValue1, theValue2, "Value, saved to file", "Value, that have read from the file");
+   FileBinaryStream element9("C:\\s2.txt");
+   element9.setBitsPoistion(0);
+   element9.setBitsFromString(theValue1 = "1011011011011011");
+   FileBinaryStream element10("C:\\s2.txt");
+   theValue2 = element10.getBitsToString(16);
+   Tester::assertEqual(theValue1, theValue2, "Value, saved to file", "Value, that have read from the file");
+  }
 void testAll()
   {testGetBytesCountInABits();
    testGetBitsAsString();
+   testGetBytesFromString();
+   testFileReadAndWrite();
   };
 int main()
   {if(true)
