@@ -70,16 +70,6 @@ class StandardDataType : public Standard
         target->setBits(bytes, countInBits);
         return countInBits;
        }
-     /*virtual unsigned long long typeSpecifierToBinary(BinaryStream &target, BINARY_STREAM_INFORMATION_EXCHANGE_MODES theMode)
-       {unsigned char* bytes;
-        unsigned long long countInBits = this->typeSpecifierToBinary(bytes, theMode);
-        target->setBytes(target, BinaryStream::getBytesCountInABits(countInBits));
-        return countInBits;          
-       }
-     virtual unsigned long long typeSpecifierToBinary(unsigned char* &data, BINARY_STREAM_INFORMATION_EXCHANGE_MODES theMode)
-       {return 0;          
-       }
-     */
      virtual unsigned long long optionsToBinary(BinaryStream &target)
        {unsigned char* bytes;
         unsigned long long countInBits = this->optionsToBinary(bytes, theMode);
