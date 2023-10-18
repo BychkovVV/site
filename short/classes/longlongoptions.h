@@ -10,7 +10,7 @@
 using namespace std;
 class LongLongOptions: public DataType<unsigned long long>
   {public:
-     LongLongOptions(unsigned long long value) : DataType(value)
+     LongLongOptions(unsigned long long value = 0) : DataType(value)
        {          
        }     
      LongLongOptions& operator += (const unsigned long long type)

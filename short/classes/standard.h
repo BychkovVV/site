@@ -41,12 +41,8 @@ class Standard
      virtual void doAccordingUnsignedLongLongSetting(string setting, bool isComplete)
        {          
        }
-    virtual unsigned long long getSizeInBytes() const
-      {return 0;
-      }    
-    virtual unsigned long long getSizeInBits() const
-      {return 0;
-      }     
+    virtual unsigned long long getSizeInBytes() const;
+    virtual unsigned long long getSizeInBits() const;
     virtual void readFromBinary(unsigned char *target)
       {
       }
@@ -58,5 +54,8 @@ class Standard
       }
     virtual unsigned long long toBinary(unsigned char* &target) const
       {return 0;          
-      }     
+      }  
+    virtual unsigned long long toBinaryStream(BinaryStream &target) const
+      {return 0;          
+      }  
   };

@@ -24,10 +24,13 @@ class BinaryStream : public DataSource
      virtual void unassign()
        {this->position = 0;          
        }     
+     virtual void setBytes(unsigned char *bytes, unsigned long long count)
+       {this->setBits(bytes, getBitsCountInABytes(count));          
+       }
      friend BinaryStream& operator << (BinaryStream &_this, Standard &value)
        {unsigned long long theCount;
         unsigned char *elements;
-        theCount = value.toBinary(elements);
+        value.toBinary(_this);
         _this.setBits(elements, theCount);
         cout << endl << "Using operator << " << to_string(theCount);
         return _this;
@@ -37,7 +40,7 @@ class BinaryStream : public DataSource
         unsigned char *elements = new unsigned char[theCount];
         /*_this.getBits(elements, value.getSizeInBits());
         */
-        value.readFromBinaryStream(_this);
+        value.fromBinary(_this);
         cout << endl << "Using operator << " << to_string(theCount);
         return _this;
        }

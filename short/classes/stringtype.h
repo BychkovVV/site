@@ -43,6 +43,9 @@ class StringType : public DataType<string>
       this->theValue.replace(0, theSize, values);
       cout << endl << "After reading object (StringType) from binary representation, size of string: " << to_string(theSize) << ", in bits: " << BinaryStream::getBitsAsString(target, BinaryStream::getBitsCountInABytes(sizeof(unsigned long long))) << ", the string: \"" << this->theValue << "\", in bits: " << BinaryStream::getBitsAsString(target + sizeof(unsigned long long), BinaryStream::getBitsCountInABytes(theSize));
      }
+   virtual unsigned long long optionsToBinaryStream(BinaryStream &target) const
+     {return 0;         
+     }
    virtual unsigned long long toBinary(unsigned char* &target) const
      {const unsigned long long sizeOfSize = sizeof(unsigned long long), size = this->theValue.size();  
       target = new unsigned char[sizeOfSize + size];
