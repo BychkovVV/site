@@ -5,7 +5,6 @@
 #include <map>
 #include <future>
 #include <fstream>
-#include <iostream>
 #include "short/classes/standard.h"
 #include "short/classes/binarystream.h"
 #include "short/classes/binary_stream_information_exchange_modes.h"
@@ -48,11 +47,52 @@ class StandardDataType : public Standard
      virtual unsigned long long optionsFromBinary(BinaryStream &value)
        {return 0;
        }
+     virtual unsigned long long dataFromBinary(unsigned char *value)
+       {return 0;
+       }
+     virtual unsigned long long dataFromBinary(BinaryStream &value)
+       {return 0;
+       }
      virtual unsigned long long dataToBinary(unsigned char *value)
        {return 0;
        }
      virtual unsigned long long dataToBinary(BinaryStream &value)
        {return 0;
+       }
+     template <typename TYPE_OF_THE_SOURCE> virtual unsigned long long fromBinary(TYPE_OF_THE_SOURCE value, BINARY_STREAM_INFORMATION_EXCHANGE_MODES mode)
+       {unsigned long long result = 0;
+        switch(mode)
+          {case BINARY_STREAM_INFORMATION_EXCHANGE_MODES::TYPE:
+             result = this->typeSpecifierFromBinary(value);
+             break;
+           case BINARY_STREAM_INFORMATION_EXCHANGE_MODES::OPTIONS:
+             result = this->optionsFromBinary(value);
+             break;
+           case BINARY_STREAM_INFORMATION_EXCHANGE_MODES::DATA:
+             result = this->dataFromBinary(value);
+             break;
+          }
+        return result;     
+       }
+     virtual unsigned long long fromBinary(unsigned char *value)
+       {unsigned long long offset = 0;
+        if(this->readingModeIsOn(BINARY_STREAM_INFORMATION_EXCHANGE_MODES::OPTIONS))
+          {offset += this->fromBinary(value + offset, BINARY_STREAM_INFORMATION_EXCHANGE_MODES::OPTIONS);          
+          }
+        if(this->readingModeIsOn(BINARY_STREAM_INFORMATION_EXCHANGE_MODES::DATA))
+          {offset += this->fromBinary(value + offset, BINARY_STREAM_INFORMATION_EXCHANGE_MODES::DATA);          
+          }          
+        return offset;
+       }
+     virtual void fromBinary(BinaryStream &theStream)
+       {unsigned long long offset = 0;
+        if(this->readingModeIsOn(BINARY_STREAM_INFORMATION_EXCHANGE_MODES::OPTIONS))
+          {offset += this->fromBinary(theStream, BINARY_STREAM_INFORMATION_EXCHANGE_MODES::OPTIONS);          
+          }
+        if(this->readingModeIsOn(BINARY_STREAM_INFORMATION_EXCHANGE_MODES::DATA))
+          {offset += this->fromBinary(theStream, BINARY_STREAM_INFORMATION_EXCHANGE_MODES::DATA);          
+          }
+        return offset;
        }
      /*
      Writing this data to binary and return quantity of bits that was wrote
@@ -70,6 +110,16 @@ class StandardDataType : public Standard
         target->setBits(bytes, countInBits);
         return countInBits;
        }
+     /*virtual unsigned long long typeSpecifierToBinary(BinaryStream &target, BINARY_STREAM_INFORMATION_EXCHANGE_MODES theMode)
+       {unsigned char* bytes;
+        unsigned long long countInBits = this->typeSpecifierToBinary(bytes, theMode);
+        target->setBytes(target, BinaryStream::getBytesCountInABits(countInBits));
+        return countInBits;          
+       }
+     virtual unsigned long long typeSpecifierToBinary(unsigned char* &data, BINARY_STREAM_INFORMATION_EXCHANGE_MODES theMode)
+       {return 0;          
+       }
+     */
      virtual unsigned long long optionsToBinary(BinaryStream &target)
        {unsigned char* bytes;
         unsigned long long countInBits = this->optionsToBinary(bytes, theMode);
@@ -87,21 +137,6 @@ class StandardDataType : public Standard
        }
      virtual unsigned long long dataToBinary(unsigned char * &target)
        {return 0;          
-       }
-     virtual unsigned long long fromBinary(unsigned char *value, BINARY_STREAM_INFORMATION_EXCHANGE_MODES mode)
-       {unsigned long long result = 0;
-        switch(mode)
-          {case BINARY_STREAM_INFORMATION_EXCHANGE_MODES::TYPE:
-             result = this->typeSpecifierFromBinary(value);
-             break;
-           case BINARY_STREAM_INFORMATION_EXCHANGE_MODES::OPTIONS:
-             result = this->optionsFromBinary(value);
-             break;
-           case BINARY_STREAM_INFORMATION_EXCHANGE_MODES::DATA:
-             result = this->dataToBinary(value);
-             break;
-          }
-        return result;     
        }
      virtual unsigned long long toBinary(BinaryStream &target, BINARY_STREAM_INFORMATION_EXCHANGE_MODES theMode) const
        {unsigned char* bytes;
@@ -124,22 +159,6 @@ class StandardDataType : public Standard
           }
         return result;
        }
-     /*virtual void toBinary(unsigned char* &bytes) const
-       {unsigned long long result = 0;
-        switch(theMode)
-          {case BINARY_STREAM_INFORMATION_EXCHANGE_MODES::TYPE:
-             result = this->typeSpecifierToBinary(bytes);
-             break;
-           case BINARY_STREAM_INFORMATION_EXCHANGE_MODES::OPTIONS:
-             result = this->optionsToBinary(bytes);
-             break;
-           case BINARY_STREAM_INFORMATION_EXCHANGE_MODES::DATA:
-             result = this->dataToBinary(bytes);
-             break;
-          }
-        return result;
-       }
-     */
      virtual unsigned long long toBinary(BinaryStream &target) const
        {unsigned long long result = 0;
         if(this->writingModeIsOn(BINARY_STREAM_INFORMATION_EXCHANGE_MODES::TYPE))
@@ -152,24 +171,6 @@ class StandardDataType : public Standard
           {result += this->toBinary(target, BINARY_STREAM_INFORMATION_EXCHANGE_MODES::DATA);            
           }          
         return result;          
-       }
-     virtual unsigned long long fromBinary(unsigned char *value)
-       {unsigned long long offset = 0;
-        if(this->readingModeIsOn(BINARY_STREAM_INFORMATION_EXCHANGE_MODES::OPTIONS))
-          {offset += this->fromBinary(value + offset, BINARY_STREAM_INFORMATION_EXCHANGE_MODES::OPTIONS);          
-          }
-        if(this->readingModeIsOn(BINARY_STREAM_INFORMATION_EXCHANGE_MODES::DATA))
-          {offset += this->fromBinary(value + offset, BINARY_STREAM_INFORMATION_EXCHANGE_MODES::DATA);          
-          }          
-        return offset;
-       }
-     virtual void fromBinary(BinaryStream &theStream)
-       {if(this->readingModeIsOn(BINARY_STREAM_INFORMATION_EXCHANGE_MODES::OPTIONS))
-          {this->fromBinary(theStream, BINARY_STREAM_INFORMATION_EXCHANGE_MODES::OPTIONS);          
-          }
-        if(this->readingModeIsOn(BINARY_STREAM_INFORMATION_EXCHANGE_MODES::DATA))
-          {this->fromBinary(theStream, BINARY_STREAM_INFORMATION_EXCHANGE_MODES::DATA);          
-          }
        }
      virtual void fromBinary(BinaryStream &theStream, BINARY_STREAM_INFORMATION_EXCHANGE_MODES mode)
        {          
