@@ -1,10 +1,15 @@
-#pragma once
-#include <iostream>
+#include "headers/common.h"
 #include "headers/classes/basic/core/standard.h"
 #include "headers/classes/basic/helpers/calculations.h"
 using Calculations = BychkovVV::main::classes::basic::helpers::Calculations;
 namespace BychkovVV::main::classes::basic::core
-  {string Standard::toString() const
+  {Standard::Standard()
+     {        
+     }
+   Standard::~Standard()
+     {        
+     }
+   string Standard::toString() const
      {return "This type 1";          
      }
    double Standard::toDoubleValue() const

@@ -4,7 +4,7 @@ namespace BychkovVV::main::classes::basic::core
   {double CompareOperation::toDoubleValue()
      {return value;
      }
-   CompareOperation::CompareOperation(unsigned long value)
+   CompareOperation::CompareOperation(BychkovVV::main::types::basic::core::UNSIGNED_INTEGER value)
      {this->value = value;             
      }
    CompareOperation::CompareOperation(string value): CompareOperation(ELEMENTS.at(value))
@@ -31,5 +31,8 @@ namespace BychkovVV::main::classes::basic::core
      }
    bool Standard::operator ==(unsigned long value) const
      {return (getValue() == value);            
+     }
+   bool Standard::operator ==(CompareOperation &value const) const
+     {return (*this == value.getValue());            
      }
   }
