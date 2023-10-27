@@ -4,7 +4,7 @@
 #include <iostream>
 #include "headers/classes/basic/core/standard.h"
 namespace BychkovVV::main::classes::basic::wrappers
-  {template <typename TYPE> class Standard : public BychkovVV::main::classes::basic::core::Standard
+  {template <typename TYPE> class Container : public BychkovVV::main::classes::basic::core::Standard
      {protected:
         TYPE value;        
       public:
