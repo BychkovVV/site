@@ -4,7 +4,7 @@ using namespace std;
 using namespace BychkovVV::main::classes;
 using namespace BychkovVV::main::classes::types;
 using namespace BychkovVV::main::types;
-namespace BychkovVV::main::classes::helpers
+namespace BychkovVV::main::classes::basic::helpers
   {class String : public Standard
      {protected:
         static string getMatchPrefix()
