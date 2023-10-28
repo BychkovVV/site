@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.27.5)
+project(Sex)
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+target_include_directories(Sex PUBLIC "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include")
+target_include_directories(Sex PUBLIC "C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\ucrt")
+target_include_directories(Sex PUBLIC "C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\shared")
+target_include_directories(Sex PUBLIC "C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um")
